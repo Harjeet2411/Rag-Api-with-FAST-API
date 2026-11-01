@@ -1,0 +1,11 @@
+Name: Harjeet J L. I am a Cloud Engineer at KFin Technologies in Hyderabad, India. I joined as an intern in May 2024 and was converted to a full-time Cloud Engineer in November 2024. I graduated in 2024 with a CGPA of 8.3.
+
+Career goal: I want to grow into a senior CloudOps, DevOps or Solutions Architect role focused on AWS, where I design reliable, automated and secure cloud platforms at scale.
+
+Interests: I am interested in cloud architecture, infrastructure as code, CI/CD automation, container orchestration with ECS and EKS, platform self-healing and applying AI to everyday DevOps work.
+
+Skills: AWS, Terraform, Jenkins, Gitea, Docker, Kubernetes (EKS), Amazon ECS, Linux, Python, Bash and Git. I have run more than 2000 AWS deployments across 44 accounts, the largest holding over 42,000 resources. I rebuilt Jenkins, Gitea and Terraform pipelines that cut a 6 hour deployment down to 5 to 7 minutes, migrated workloads from on-prem and EC2 to ECS and EKS, and built a self-healing Jenkins plugin that earned organisation-level recognition.
+
+Hobbies: In my free time I build side projects, explore new cloud services, follow technology news and keep my home lab running.
+
+Fun fact: The pipeline work I am proudest of turned a deployment that used to take most of a working day into something that finishes before my coffee gets cold.
