@@ -21,3 +21,6 @@ Open http://127.0.0.1:8000/docs.
 
 Response shape: `{"question", "answer", "context_used"}`.
 
+
+## Screenshots
+See [screenshots/README.md](screenshots/README.md).
