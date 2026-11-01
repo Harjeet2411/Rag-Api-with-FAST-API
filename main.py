@@ -1,8 +1,11 @@
 """RAG API: answer questions about a profile using Chroma retrieval + a local Ollama model."""
+import uuid
+
 import chromadb
 import ollama
 from chromadb.utils.embedding_functions import OllamaEmbeddingFunction
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 
 DB_PATH = "./chroma_db"
 COLLECTION = "personal_profile"
@@ -18,10 +21,36 @@ embed = OllamaEmbeddingFunction(
 collection = client.get_or_create_collection(name=COLLECTION, embedding_function=embed)
 
 
+class Document(BaseModel):
+    user: str
+    text: str
+
+
+@app.post("/documents")
+def add_document(doc: Document):
+    """Secret mission: store another user's profile so /ask can be filtered by user."""
+    chunks = [c.strip() for c in doc.text.split("\n\n") if c.strip()]
+    if not chunks:
+        raise HTTPException(status_code=400, detail="text is empty")
+    batch = uuid.uuid4().hex[:8]
+    collection.add(
+        ids=[f"{doc.user}-{batch}-{i}" for i in range(len(chunks))],
+        documents=chunks,
+        metadatas=[
+            {"source": "api", "chunk_index": i, "user": doc.user}
+            for i in range(len(chunks))
+        ],
+    )
+    return {"user": doc.user, "chunks_added": len(chunks)}
+
+
 @app.get("/ask")
-def ask(question: str):
-    results = collection.query(query_texts=[question], n_results=2)
-    context_chunks = results["documents"][0]
+def ask(question: str, user: str | None = None):
+    where = {"user": user} if user else None
+    results = collection.query(query_texts=[question], n_results=2, where=where)
+    context_chunks = results["documents"][0] if results["documents"] else []
+    if not context_chunks:
+        raise HTTPException(status_code=404, detail="no documents found for this user")
     context = "\n\n".join(context_chunks)
 
     prompt = (
